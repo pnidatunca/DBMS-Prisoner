@@ -1,0 +1,133 @@
+CREATE TABLE Prisoner(
+prisoner_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(20),
+    last_name VARCHAR2(20),
+    national_id VARCHAR2(2) UNIQUE,
+    date_of_birth DATE,
+    gender VARCHAR2(6),
+    entry_date DATE,
+    release_date DATE,
+    ward_id NUMBER,
+    crime_id NUMBER,
+    CONSTRAINT fk_prisoner_ward FOREIGN KEY (ward_id) REFERENCES wards(ward_id),
+    CONSTRAINT fk_prisoner_crime FOREIGN KEY (crime_id) REFERENCES 
+    crime(crime_id)
+);
+
+CREATE TABLE Visitors (
+    visitor_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(20),
+    last_name VARCHAR2(20),
+    national_id VARCHAR2(2),
+    phone VARCHAR2(15),
+    prisoner_id NUMBER,
+    visit_date DATE,
+    visit_time DATE,
+    CONSTRAINT fk_visitors_prisoner FOREIGN KEY (prisoner_id) REFERENCES prisoner(prisoner_id)
+);
+
+CREATE TABLE Wards (
+    ward_id NUMBER PRIMARY KEY,
+    section VARCHAR2(10),
+    capacity NUMBER,
+    security_level VARCHAR2(20)
+);
+
+CREATE TABLE Dispatches (
+    dispatch_id NUMBER PRIMARY KEY,
+    prisoner_id NUMBER,
+    destination_prison VARCHAR2(100),
+    dispatch_date DATE,
+    reason VARCHAR2(1000),
+    CONSTRAINT fk_dispatch_prisoner FOREIGN KEY (prisoner_id) REFERENCES prisoner(prisoner_id)
+);
+
+CREATE TABLE crime (
+    crime_id NUMBER PRIMARY KEY,
+    crime_name VARCHAR2(255),
+    sentence_duration NUMBER,
+    description VARCHAR2(1000)  
+);
+
+CREATE TABLE Positions(
+position_id NUMBER PRIMARY KEY,
+position_name VARCHAR2(20)
+);
+
+
+CREATE TABLE Personnel(
+    personnel_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(20),
+    last_name VARCHAR2(20),
+    shift_id NUMBER,
+    position_id NUMBER,
+    CONSTRAINT fk_personnel_position FOREIGN KEY(position_id) REFERENCES Positions(position_id)
+);
+
+CREATE TABLE shifts (
+    shift_id NUMBER PRIMARY KEY,
+    start_time DATE,
+    end_time DATE,
+    shift_type VARCHAR2(20)
+);
+
+CREATE TABLE Infirmary (
+    record_id NUMBER PRIMARY KEY,
+    prisoner_id NUMBER,
+    infirmary_date DATE,
+    illness VARCHAR2(1000),
+    treatment VARCHAR2(1000),
+    doctor_name VARCHAR2(50),
+    CONSTRAINT fk_infirmary_prisoner FOREIGN KEY (prisoner_id) REFERENCES prisoner(prisoner_id)
+);
+
+CREATE TABLE Lawyers(
+    personnel_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(50),
+    last_name VARCHAR2(50),
+    bar_number VARCHAR2(20),
+    phone VARCHAR2(15),
+    email VARCHAR2(100),     
+    prisoner_id NUMBER,
+    CONSTRAINT fk_lawyer_personnel FOREIGN KEY (personnel_id) REFERENCES personnel(personnel_id)
+);
+
+CREATE TABLE Activities (
+    activity_id NUMBER PRIMARY KEY,
+    activity_name VARCHAR2(100),
+    activities_date DATE,
+    prisoner_id NUMBER,
+    CONSTRAINT fk_activity_prisoner FOREIGN KEY (prisoner_id) REFERENCES prisoner(prisoner_id)
+);
+
+CREATE TABLE Trials (
+    trials_id NUMBER PRIMARY KEY ,
+    trials_date DATE,
+    court_address VARCHAR2(250),
+    outcome VARCHAR2(1000)
+);
+
+ CREATE TABLE Prisoner_trials(
+   prisoner_id NUMBER,
+   trials_id NUMBER,
+   CONSTRAINT fk_prisontrails_prisoner FOREIGN KEY(prisoner_id) REFERENCES prisoner(prisoner_id),
+   CONSTRAINT fk_prisontrails_trials FOREIGN KEY (trials_id) REFERENCES trials(trials_id)
+ );
+
+CREATE TABLE visit_permissions (
+    permission_id NUMBER PRIMARY KEY,
+    prisoner_id NUMBER,
+    visitor_id NUMBER,
+    permission_status VARCHAR2(20),
+    note VARCHAR2(1000),
+    CONSTRAINT fk_visit_permission_prisoner FOREIGN KEY (prisoner_id) REFERENCES prisoner(prisoner_id),
+    CONSTRAINT fk_visit_permission_visitor FOREIGN KEY (visitor_id) REFERENCES visitors(visitor_id)
+);
+
+CREATE TABLE guards(                                                               
+personnel_id NUMBER PRIMARY KEY ,            
+guard_name VARCHAR2(50),
+phone VARCHAR2(15),
+ward_id NUMBER,     
+CONSTRAINT fk_guard_ward FOREIGN KEY (ward_id) REFERENCES ward(ward_id)  
+);
