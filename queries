@@ -1,0 +1,62 @@
+PRİSONER SORGULAR
+SELECT * FROM PRISONER;
+SELECT * FROM TRIALS;
+SELECT * FROM PRISONER_TRIALS;
+SELECT * FROM CRIME;
+
+SELECT 
+    p.first_name,
+    p.last_name,
+    c.crime_name,
+    t.court_type,
+    t.outcome
+FROM    prisoner p
+INNER JOIN crime c 
+ON p.crime_id = c.crime_id
+INNER JOIN prisoner_trials pt
+ON p.prisoner_id = pt.prisoner_id
+INNER JOIN trials t 
+ON pt.trials_id = t.trials_id
+WHERE c.sentence_duration > 65;
+
+SELECT COURT_TYPE,outcome,COUNT(*) AS outcome_count
+FROM TRIALS
+WHERE court_type='Federal Court'
+GROUP BY COURT_TYPE,outcome 
+ORDER BY outcome_count DESC FETCH FIRST 3 ROW ONLY;
+
+SELECT pt.prisoner_id, COUNT(pt.trials_id) AS trials_count
+FROM prisoner_trials pt
+GROUP BY pt.prisoner_id
+HAVING COUNT(pt.trials_id) > 1;
+
+SELECT COUNT(*) AS total_2024_entries
+FROM prisoner
+WHERE entry_date >= TO_DATE('2024-01-01', 'YYYY-MM-DD')
+  AND entry_date < TO_DATE('2025-01-01', 'YYYY-MM-DD');
+
+SELECT gender ,COUNT(*) AS total
+FROM PRISONER
+GROUP BY GENDER;
+
+
+SELECT p.first_name,p.last_name,t.outcome
+FROM PRISONER p
+INNER JOIN PRISONER_TRIALS pt
+ON pt.PRISONER_ID=p.prisoner_id 
+INNER JOIN TRIALS t
+ON pt.TRIALS_ID=t.TRIALS_ID
+WHERE outcome='Not Guilty';
+
+SELECT p.first_name,p.last_name,c.sentence_duration
+FROM PRISONER p
+JOIN CRIME c
+ON p.crime_id=c.crime_id
+ORDER BY sentence_duration DESC ;
+
+SELECT c.crime_name, COUNT(p.prisoner_id) AS prisoner_count
+FROM crime c
+JOIN prisoner p ON c.crime_id = p.crime_id
+GROUP BY c.crime_name
+ORDER BY prisoner_count DESC;
+
