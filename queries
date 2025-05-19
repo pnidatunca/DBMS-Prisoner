@@ -60,3 +60,5 @@ JOIN prisoner p ON c.crime_id = p.crime_id
 GROUP BY c.crime_name
 ORDER BY prisoner_count DESC;
 
+SELECT* FROM CRIME
+WHERE CRIME_ID>3;
