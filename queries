@@ -72,3 +72,12 @@ WHERE position_name='IT Specialist';
 SELECT record_id,COUNT(*) total_sick
 FROM INFIRMARY
 GROUP BY(record_id);
+
+--SHİT_İD Sİ 1-10 ARASI OLANLAR
+
+SELECT p.first_name,p.last_name,s.shift_id
+FROM PERSONNEL p
+JOIN SHIFTS S
+ON p.SHIFT_ID=S.SHIFT_ID
+WHERE p.shift_id IN(1,2,3,4,5,6,7,8,9,10);
+
