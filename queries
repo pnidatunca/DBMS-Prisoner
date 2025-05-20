@@ -60,5 +60,15 @@ JOIN prisoner p ON c.crime_id = p.crime_id
 GROUP BY c.crime_name
 ORDER BY prisoner_count DESC;
 
-SELECT* FROM CRIME
-WHERE CRIME_ID>3;
+
+--PERSONELLERİN ADI-SOYADI-POZİSYONU
+SELECT p.first_name,p.last_name,ps.position_name
+FROM PERSONNEL p
+JOIN POSITIONS ps
+ON ps.POSITION_ID=p.position_id
+WHERE position_name='IT Specialist';
+
+--RECORD_İD LERİNE GÖRE HASTA SAYISI
+SELECT record_id,COUNT(*) total_sick
+FROM INFIRMARY
+GROUP BY(record_id);
